@@ -1,4 +1,4 @@
---reference to data model
+--reference to a data model
 {{ref('model_nm')}}
 
 --set variables
@@ -18,3 +18,37 @@
 {{ my_letter[0] }}
 {{ my_letter[1] }}
 {{ my_letter[2] }}
+
+-- looping
+{% set letters = ['a','b','c','d'] %}
+{% for letter in letters %}
+my fav is {{letter}}
+{% endfor %}
+
+--- if else
+{% set temp = 100 %}
+{% if temp < 150 %}
+    cold
+{% else %}
+    hot 
+{% endif %}
+
+-- looping + if
+{% set letters = ['a','b','c','d'] %}
+{%- for letter in letters -%}
+    {%- if letter == 'a' -%}
+        {% set target = 1 -%}
+    {%- else %}
+        {%- set target = 2 -%}
+    {%- endif -%}
+my fav is {{letter}} its target {{target}}
+{% endfor %}
+
+--dictionary
+{% set dict = {
+    'a':'apple',
+    'b':'ball',
+    'c':'cat'
+} %}
+
+{{dict['a']}},{{dict['b']}},{{dict['c']}}
