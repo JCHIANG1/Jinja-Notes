@@ -1,0 +1,20 @@
+--reference to data model
+{{ref('model_nm')}}
+
+--set variables
+{% set hello = 'hi' %}
+{% set name = 'Mimi' %}
+{{hello}}, my name is {{name}}!  --this line would print the output
+
+--this would comment out 
+{#
+{% set hello = 'hi' %}
+{% set name = 'Mimi' %}
+{{hello}}, my name is {{name}}!
+#}
+
+-- indexing 
+{% set my_letter = ['a','b','c','d'] %}
+{{ my_letter[0] }}
+{{ my_letter[1] }}
+{{ my_letter[2] }}
