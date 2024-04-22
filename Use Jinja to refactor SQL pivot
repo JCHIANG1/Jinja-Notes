@@ -1,1 +1,38 @@
 
+-- Exploring data
+select *
+from {{ ref("stg_orders") }}
+limit 100
+
+-- Pivot data
+select
+    order_id,
+    sum(case when status = 'placed' then 1 else 0 end) as placed_cnt,
+    sum(case when status = 'shipped' then 1 else 0 end) as shipped_cnt,
+    sum(case when status = 'returned' then 1 else 0 end) as returned_cnt,
+    sum(case when status = 'completed' then 1 else 0 end) as completed_cnt,
+    sum(case when status = 'return_pending' then 1 else 0 end) as return_pending_cnt
+from {{ ref("stg_orders") }}
+group by 1
+order by 1
+
+-- Refactor pivot using Jinja
+
+ {% set status_lst = [
+        'status',
+        'placed',
+        'shipped',
+        'returned',
+        'completed',
+        'return_pending'
+    ] %}
+
+select
+    order_id,
+    {% for status_cd in status_lst %}
+        sum(case when status = '{{ status_cd }}' then 1 else 0 end) as {{ status_cd }}_cnt
+        {% if not loop.last %}, {% endif %}
+    {% endfor %}
+from {{ ref("stg_orders") }}
+group by 1
+order by 1
