@@ -10,3 +10,15 @@
 select order_dt, {{ add_Three('order_dt') }} as shipment_dt, {{ add_Three('order_id') }} as testID
 from {{ ref('stg_orders') }}
 
+
+--- create a macro to filer data in default env
+{% macro dev_pastXyr_fromnow(dt_column_nm,lookbackyr=3) %}
+    {% if target.name == 'default'%}
+        where {{dt_column_nm}} >= date_add(current_date,interval -{{lookbackyr}} year)
+    {% endif %}
+{% endmacro %}
+
+-- Execute this macro
+select current_date,*
+from {{ref('stg_orders')}}
+{{dev_pastXyr_fromnow('order_date',1)}}
