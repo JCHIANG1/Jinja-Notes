@@ -1,1 +1,12 @@
+-- Macros are generic logic that can be reused
+-- package, on the other hand, lets us import the macro developed by other developers for our project
+
+-- Create a test macro to add 3 for the field
+{% macro add_Three(column_nm) %}
+{{column_nm}} + 3
+{% endmacro %}
+
+-- Execute this macro
+select order_dt, {{ add_Three('order_dt') }} as shipment_dt, {{ add_Three('order_id') }} as testID
+from {{ ref('stg_orders') }}
 
